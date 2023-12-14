@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { CharactersService } from '../services/characters.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-characters',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './characters.component.html',
   styleUrl: './characters.component.css'
 })
@@ -14,7 +16,7 @@ export class CharactersComponent {
 
   num_characters: number[] = [];
 
-  constructor(private http:HttpClient){}
+  constructor(private charactersService: CharactersService){}
 
   private generarAleatorio(min: number, max: number): void {
     for(let i: number = 0; i < 5; i++){
@@ -24,7 +26,7 @@ export class CharactersComponent {
 
   ngOnInit(): void{
     this.generarAleatorio(1, 826);
-    this.http.get("https://rickandmortyapi.com/api/character/"+this.num_characters.join())
+    this.charactersService.getCharacters(this.num_characters)
       .subscribe(
         result=> {
           this.characters = result;
